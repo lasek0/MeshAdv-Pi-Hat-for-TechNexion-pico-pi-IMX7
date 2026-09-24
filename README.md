@@ -1,6 +1,8 @@
 # MeshAdv-Pi-Hat-for-TechNexion-pico-pi-IMX7
 instructions how to allow MeshAdv-Pi-Hat to work with TechNexion pico-pi IMX7 board
 
+![picture](https://github.com/lasek0/MeshAdv-Pi-Hat-for-TechNexion-pico-pi-IMX7/blob/main/res/picopiimx7.jpg?raw=true)
+
 the TechNexion pico-pi IMX7 board are electrically and physically compatible with the Raspberry PI
 so it is possible to connect the MeshAdv-Pi-Hat directly to the board, BUT: the kernel
 device tree must be changed to free some pins to be GPIO again.
@@ -565,5 +567,3 @@ systemctl enable meshtasticd@radio1.service
 
 if you have any problems feel free to ask questions and post problems as verbose as possible.
 
-# preview
-![picture](https://github.com/lasek0/MeshAdv-Pi-Hat-for-TechNexion-pico-pi-IMX7/blob/main/res/picopiimx7.jpg?raw=true)
