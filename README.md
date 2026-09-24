@@ -564,3 +564,6 @@ systemctl enable meshtasticd@radio1.service
 # NOTE:
 
 if you have any problems feel free to ask questions and post problems as verbose as possible.
+
+# preview
+![picture](https://github.com/lasek0/MeshAdv-Pi-Hat-for-TechNexion-pico-pi-IMX7/blob/main/res/picopiimx7.jpg?raw=true)
