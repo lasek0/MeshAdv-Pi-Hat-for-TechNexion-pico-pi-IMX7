@@ -325,7 +325,7 @@ sudo chroot picopisysroot /usr/bin/qemu-arm-static /bin/sh
 
 -> on QEMU
 ```
-# GIT - done
+# GIT - needed for platformio meshtastic
 cd /work/
 wget 'https://github.com/git/git/archive/refs/heads/master.zip'
 unzip master.zip
@@ -340,14 +340,14 @@ make -j8
 make install
 
 
-# CMAKE - done
+# CMAKE
 cd /work/
 git clone https://github.com/Kitware/CMake
 ./bootstrap --parallel=8  --no-qt-gui -- -DBUILD_TESTING=OFF
 make && make install
 
 
-# YAML-CPP - done
+# YAML-CPP
 
 cd /work/
 git clone https://github.com/jbeder/yaml-cpp.git
@@ -358,7 +358,7 @@ cmake --install build
 
 
 
-# LIBUSB - done
+# LIBUSB
 
 cd /work/
 git clone https://github.com/libusb/libusb.git
@@ -371,7 +371,7 @@ make
 make install
 
 
-# LIBUV - done
+# LIBUV
 
 cd /work/
 git clone https://github.com/libuv/libuv.git
@@ -382,7 +382,7 @@ cmake -S . -B build \
 cmake --build build -j8
 cmake --install build
 
-# LIBGPIOD - done
+# LIBGPIOD
 
 cd /work/
 git clone https://github.com/brgl/libgpiod.git
@@ -404,7 +404,7 @@ ninja -C build install
 
 
 
-# BLUEZ - done (only libbluetooth.so)
+# BLUEZ - (only libbluetooth.so)
 
 cd /work/
 git clone https://github.com/pauloborges/bluez
@@ -450,13 +450,15 @@ cd i2c-tools
 make -j4
 make install
 
+
+# MESHTASTICD
+cd /work/
+git clone https://github.com/meshtastic/firmware.git
+cd firmware
+
 # fix flags - remove -lstdc++fs since the filesystem is inside stdc++ for new c++
 #/work/firmware/variants/native/portduino.ini:  -lstdc++fs
 
-
-# MESHTASTICD - done
-
-cd /work/firmware
 pip install platformio
 pio run -e native -j8
 ```
@@ -558,3 +560,7 @@ systemctl enable meshtasticd@radio1.service
 
 
 ```
+
+# NOTE:
+
+if you have any problems feel free to ask questions and post problems as verbose as possible.
