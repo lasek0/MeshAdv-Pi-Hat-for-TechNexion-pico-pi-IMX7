@@ -1,7 +1,7 @@
 # MeshAdv-Pi-Hat-for-TechNexion-pico-pi-IMX7
 instructions how to allow MeshAdv-Pi-Hat to work with TechNexion pico-pi IMX7 board
 
-the TechNexion pico-pi IMX7 board are electrically and physically with the Raspberry PI
+the TechNexion pico-pi IMX7 board are electrically and physically compatible with the Raspberry PI
 so it is possible to connect the MeshAdv-Pi-Hat directly to the board, BUT: the kernel
 device tree must be changed to free some pins to be GPIO again.
 
@@ -10,6 +10,10 @@ https://gist.github.com/liquidx/fd1002ec870a7c13f04a0b8a44744246
 
 you will need some huge ammount of time for cross compilation and the free keyboard to connect to board.
 the lcd display is touchscreen - do not need mouse
+
+NOTE: there is two version of the pico pi IMX7 boards
+	older: with 4GB emmc and broadcom wifi/bt
+	newer: with 16GB emmc and qca wifi/bt
 
 # get OS
 ```
@@ -49,6 +53,8 @@ uuu -lsusb
 uuu -b emmc_imx7_img.auto imx7-SPL imx7-u-boot.img pico-imx7_pico-pi_yocto-5.2-qt6_qca9377_lcd-800x480_20260625.wic
 ```
 
+disconnect USB-C cable
+
 # restore jumpers
 To reset back to booting off eMMC the jumpers should be
 ```
@@ -56,7 +62,11 @@ To reset back to booting off eMMC the jumpers should be
 **- **-
 ```
 
+connect board using USB-C cable
+
 # fix wifi:
+
+this apply to the board with broadcom wifi module
 
 -> download:
 ```
@@ -75,8 +85,9 @@ ip addr add 192.168.2.2/24 dev eth0
 ip addr add 192.168.2.1/24 dev eth0
 ```
 
--> copy to target
+-> on host 
 ```
+#copy to target
 scp brcmfmac4339-sdio.bin root@192.168.2.2:/root/
 scp brcmfmac4339-sdio.txt root@192.168.2.2:/root/
 ```
@@ -127,8 +138,8 @@ fix: usdhc1grp_100mhz fsl,pins = <0x198 0x408 0x00 0x05 0x00 0x5a 0x194 0x404 0x
 fix: usdhc1grp_200mhz fsl,pins = <0x198 0x408 0x00 0x05 0x00 0x5b 0x194 0x404 0x00 0x00 0x00 0x1b 0x19c 0x40c 0x00 0x00 0x00 0x5b 0x1a0 0x410 0x00 0x00 0x00 0x5b 0x1a4 0x414 0x00 0x00 0x00 0x5b 0x1a8 0x418 0x00 0x00 0x00 0x5b 0x188 0x3f8 0x00 0x05 0x00 0x15>;
 fix: pwm1 fsl,pins = <0x14 0x26c 0x00 0x00 0x00 0x7f>;
 fix: pwm2 fsl,pins = <0x18 0x270 0x00 0x00 0x00 0x7f>;
-change: can@30a00000 status = "disabled";
-change: can@30a10000 status = "disabled";
+fix: can@30a00000 status = "disabled";
+fix: can@30a10000 status = "disabled";
 ```
 convert back the device tree
 ```
@@ -136,7 +147,7 @@ dtc -I dts -O dtb -o /run/media/boot-mmcblk2p1/imx7d-pico-pi-qca.dtb boot_modiff
 reboot
 ```
 
-verbose info:
+verbose debug info:
 ```
 pinctrl_can1: can1frpgrp { 
 	fsl,pins = < 
@@ -288,6 +299,11 @@ GPIO7 = gpiochip6
 ```
 sudo apt install qemu-user-static binfmt-support
 
+#mount picopi sys root from .wic file
+sudo losetup --find --partscan --show pico-imx7_pico-pi_yocto-5.2-qt6_qca9377_lcd-800x480_20260625.wic
+# output for example /dev/loop41
+mkdir picopisysroot
+sudo mount /dev/loop41p2 picopisysroot/
 
 mkdir work
 sudo mkdir picopisysroot/work
@@ -499,7 +515,7 @@ Logging:
 General:
   MaxNodes: 200
   MACAddress: AA:BB:CC:DD:EE:FF
-$  MACAddressSource: eth0
+#  MACAddressSource: eth0
 EOF
 ```
 
